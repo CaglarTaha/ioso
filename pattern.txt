@@ -1,0 +1,74 @@
+# ARCHITECTURE RULES
+
+1. **DIRECTORY STRUCTURE**
+   - src/
+     ├── Api/             # API services (Axios-based)
+     ├── Assets/          # Static assets (images/icons/fonts)
+     ├── Components/      # Reusable UI components
+     ├── BottomSheets/    # Modal components
+     ├── Navigations/     # React Navigation setup
+     ├── Screens/         # Page components
+     ├── Store/           # Redux Toolkit state
+     ├── Hooks/           # Custom React hooks
+     ├── Utils/           # Utility functions
+     └── i18n.ts          # Localization config
+
+2. **LOCALIZATION RULES**
+   - Supported languages: ONLY English (en) and Turkish (tr)
+   - Directory: /locales
+   - Files:
+        en.json
+        tr.json
+   - Forbidden: 
+        Any other language files (*.json)
+        Translation scripts (*.py)
+
+3. **SURVEY SYSTEM RULES**
+   - STRICTLY PROHIBITED:
+        /src/Surveys directory
+        /src/SurveyEngine directory
+        Any survey-related dependencies
+
+4. **I18N CONFIG RULES**
+   // i18n.ts MUST contain:
+   supportedLngs: ['en', 'tr']
+   resources: {
+        en: { translation: require('../locales/en.json') },
+        tr: { translation: require('../locales/tr.json') }
+   }
+
+5. **DEPENDENCY RULES**
+   - Required:
+        "i18next": "^23.x",
+        "react-i18next": "^13.x"
+   - Forbidden:
+        "survey-react"
+        "survey-creator"
+
+6. **CODE CONVENTIONS**
+   - TypeScript ONLY (no JavaScript)
+   - Functional components
+   - Redux Toolkit for state
+   - React Navigation v6
+   - Axios for API calls
+
+7. **FILE NAMING**
+   - Component files: PascalCase (Button.tsx)
+   - Hook files: use*.ts (useAuth.ts)
+   - API files: *.api.ts (Auth.api.ts)
+   - Store files: *.slice.ts (auth.slice.ts)
+
+8. **PROHIBITED ELEMENTS**
+   - Survey components/modules
+   - Translation automation scripts
+   - Non-Turkish/English locales
+   - Class-based components
+   - Redux core (must use Redux Toolkit)
+
+# VIOLATION HANDLING
+- Reject any deviation from these rules
+- Auto-correct violations:
+   1. Delete survey-related code
+   2. Remove non-en/tr locales
+   3. Enforce i18n config rules
+   4. Prune forbidden dependencies

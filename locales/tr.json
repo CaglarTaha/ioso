@@ -1,0 +1,20 @@
+{
+  "welcome": "Hoş Geldiniz",
+  "login": "Giriş",
+  "logout": "Çıkış",
+  "register": "Kayıt Ol",
+  "email": "E-posta",
+  "password": "Şifre",
+  "organizations": "Organizasyonlar",
+  "profile": "Profil",
+  "settings": "Ayarlar",
+  "home": "Ana Sayfa",
+  "cancel": "İptal",
+  "save": "Kaydet",
+  "delete": "Sil",
+  "edit": "Düzenle",
+  "add": "Ekle",
+  "loading": "Yükleniyor...",
+  "error": "Hata",
+  "success": "Başarılı"
+}

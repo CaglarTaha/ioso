@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { store, RootState, AppDispatch } from './store';
-import { loadStoredAuth } from './store/slices/authSlice';
-import SplashScreen from './components/SplashScreen';
-import OnboardingScreen from './components/OnboardingScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import TabNavigator from './navigation/TabNavigator';
-import TestScreen from './screens/TestScreen';
-import OrganizationDetailScreen from './screens/OrganizationDetailScreen';
-import { RootStackParamList } from './types/navigation';
+import { store, RootState, AppDispatch } from './src/Store';
+import { loadStoredAuth } from './src/Store/slices/auth.slice';
+import OnboardingScreen from './src/Components/OnboardingScreen';
+import LoginScreen from './src/Screens/LoginScreen';
+import RegisterScreen from './src/Screens/RegisterScreen';
+import TabNavigator from './src/Navigations/TabNavigator';
+import TestScreen from './src/Screens/TestScreen';
+import OrganizationDetailScreen from './src/Screens/OrganizationDetailScreen';
+import { RootStackParamList } from './src/types/navigation';
+import './src/i18n';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,7 +19,6 @@ const AppContent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, isLoading } = useSelector((state: RootState) => state.auth);
   
-  const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [appLoading, setAppLoading] = useState(true);
 
@@ -37,16 +36,12 @@ const AppContent: React.FC = () => {
     initializeApp();
   }, [dispatch]);
 
-  const handleFinishSplash = () => {
-    setShowSplash(false);
-  };
-
   const handleFinishOnboarding = () => {
     setShowOnboarding(false);
   };
 
-  if (appLoading || isLoading || showSplash) {
-    return <SplashScreen onFinish={handleFinishSplash} />;
+  if (appLoading || isLoading) {
+    return null; // or a simple loading component
   }
 
   if (showOnboarding) {
