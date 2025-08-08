@@ -14,6 +14,7 @@ import OrganizationCalendarListScreen from './src/Screens/OrganizationCalendarLi
 import CalendarDateDetailScreen from './src/Screens/CalendarDateDetailScreen';
 import { RootStackParamList } from './src/types/navigation';
 import './src/i18n';
+import DebuggerClient from './DebuggerClient';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -86,6 +87,7 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <Provider store={store}>
+      <DebuggerClient />
       <AppContent />
     </Provider>
   );
