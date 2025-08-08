@@ -4,6 +4,13 @@ export type RootStackParamList = {
   OrganizationDetail: {
     organizationId: number;
   };
+  OrganizationCalendarList: {
+    organizationId: number;
+  };
+  CalendarDateDetail: {
+    organizationId: number;
+    date: string; // YYYY-MM-DD
+  };
   Login: undefined;
   Register: undefined;
 };

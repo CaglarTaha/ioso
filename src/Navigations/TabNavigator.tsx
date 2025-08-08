@@ -1,41 +1,29 @@
 import React from 'react';
-import { Text, Platform, SafeAreaView } from 'react-native';
+import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import OrganizationsScreen from '../Screens/OrganizationsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import SettingsScreen from '../Screens/SettingsScreen';
 import Icon from '@react-native-vector-icons/fontawesome6';
 import { useTheme } from '../Hooks/useTheme';
+import { buildTabStyles } from '../Styles/AppStyles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator: React.FC = () => {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+  const styles = buildTabStyles(colors, { bottom: insets.bottom });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <Tab.Navigator
+    <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: colors.tabBarActive,
           tabBarInactiveTintColor: colors.tabBarInactive,
-          tabBarStyle: {
-            backgroundColor: colors.tabBarBackground,
-            paddingTop: 5,
-            height: Platform.OS === 'ios' ? 85 : 60,
-            paddingBottom: Platform.OS === 'ios' ? 30 : 5,
-            borderTopWidth: 1,
-            borderTopColor: colors.border,
-            position: 'absolute',
-            elevation: 5,
-            zIndex: 1000,
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            shadowColor: colors.shadowColor,
-            shadowOffset: { width: 0, height: -3 },
-          },
-          tabBarItemStyle: {
-            paddingVertical: 5,
-          },
+          tabBarStyle: styles.tabBarStyle,
+          tabBarItemStyle: styles.tabBarItemStyle,
+          tabBarLabelStyle: styles.tabBarLabelStyle,
           headerShown: false,
         }}
       >
@@ -66,8 +54,7 @@ const TabNavigator: React.FC = () => {
             ),
           }}
         />
-      </Tab.Navigator>
-    </SafeAreaView>
+    </Tab.Navigator>
   );
 };
 

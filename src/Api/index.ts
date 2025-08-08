@@ -18,7 +18,8 @@ export const IocoApi= axios.create({
   baseURL: API_URL,
   headers: Headers,
   timeout: 15000,
-  validateStatus: (status) => status >= 200,
+  // Reject on 4xx/5xx so we can handle errors in catch blocks
+  validateStatus: (status) => status >= 200 && status < 300,
 });
 
 let refreshTokenInProgress = false;
@@ -86,15 +87,21 @@ const handleTokenRefresh = async (refreshTokenValue: string): Promise<void> => {
       await ApiStorage.setRefreshToken(tokens.refreshToken);
       
       // Resolve pending requests
-      pendingRequests.forEach((resolve) => resolve());
+      pendingRequests.forEach((resolve) => resolve(tokens.accessToken));
     } else {
       // Refresh failed, logout user
+      const { ApiStorage } = await import('./Storage.api');
+      await ApiStorage.clearAuthData();
+      await ApiStorage.setIsLoggedIn(false);
       store.dispatch(logout());
-      pendingRequests.forEach((resolve) => resolve());
+      pendingRequests.forEach((resolve) => resolve(null));
     }
   } catch (error) {
+    const { ApiStorage } = await import('./Storage.api');
+    await ApiStorage.clearAuthData();
+    await ApiStorage.setIsLoggedIn(false);
     store.dispatch(logout());
-    pendingRequests.forEach((resolve) => resolve());
+    pendingRequests.forEach((resolve) => resolve(null));
   } finally {
     refreshTokenInProgress = false;
     pendingRequests = [];
@@ -136,6 +143,9 @@ IocoApi.interceptors.response.use(
   async (response) => {
     // Handle 401 unauthorized
     if (response.status === 401) {
+      const { ApiStorage } = await import('./Storage.api');
+      await ApiStorage.clearAuthData();
+      await ApiStorage.setIsLoggedIn(false);
       store.dispatch(logout());
     }
     
@@ -143,7 +153,12 @@ IocoApi.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      store.dispatch(logout());
+      (async () => {
+        const { ApiStorage } = await import('./Storage.api');
+        await ApiStorage.clearAuthData();
+        await ApiStorage.setIsLoggedIn(false);
+        store.dispatch(logout());
+      })();
     }
     return Promise.reject(error);
   }

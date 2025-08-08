@@ -59,6 +59,16 @@ export const ApiCalendarEvent = {
     }).then((response) => response.data);
   },
 
+  GetAllMembersEvents: async (
+    organizationId: number,
+    startDate: string,
+    endDate: string
+  ): Promise<Record<string, CalendarEventType[]>> => {
+    return await IocoApi.get(`/calendar-events/organization/${organizationId}/all-members`, {
+      params: { startDate, endDate }
+    }).then((response) => response.data);
+  },
+
   FindFreeTimeSlots: async (
     organizationId: number,
     duration: number,

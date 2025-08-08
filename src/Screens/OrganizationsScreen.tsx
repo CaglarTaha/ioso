@@ -111,7 +111,7 @@ const OrganizationsScreen: React.FC = () => {
 
     setIsJoining(true);
     try {
-      const response = await IocoApi.post('/organization-invites/join', {
+      const response = await IocoApi.post('/invites/join', {
         inviteCode: joinCode.trim().toUpperCase()
       });
       

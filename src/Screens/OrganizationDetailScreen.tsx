@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  RefreshControl,
-  Alert,
-  ActivityIndicator,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, RefreshControl, Alert, ActivityIndicator, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
@@ -18,11 +7,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import Icon from '@react-native-vector-icons/fontawesome6';
 import { useTheme } from '../Hooks/useTheme';
+import AppHeader from '../Components/ui/AppHeader';
+import IconButton from '../Components/ui/IconButton';
+import LoadingView from '../Components/ui/LoadingView';
 import { RootState, AppDispatch } from '../store';
 import { fetchOrganizationById } from '../Store/slices/organization.slice';
 import { IocoApi } from '../Api';
 import { Organization, Member, Event } from '../../interfaces/organization';
 import CalendarView from '../Components/CalendarView';
+import MonthDayListView from '../Components/MonthDayListView';
 import InviteModal from '../Components/InviteModal';
 import MembersDrawer from '../BottomSheets/MembersDrawer';
 
@@ -66,7 +59,7 @@ const OrganizationDetailScreen: React.FC = () => {
   const createInviteCode = async () => {
     setIsCreatingInvite(true);
     try {
-      const response = await IocoApi.post('/organization-invites', {
+      const response = await IocoApi.post('/invites', {
         organizationId: organizationId,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 gün
         maxUsage: 10 // 10 kişi kullanabilir
@@ -145,21 +138,8 @@ const OrganizationDetailScreen: React.FC = () => {
   if (isLoading && !currentOrganization) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon name="arrow-left" iconStyle="solid" size={20} color={colors.text} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Organizasyon Detayları</Text>
-        </View>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={[styles.emptyStateText, { marginTop: 16 }]}>
-            Yükleniyor...
-          </Text>
-        </View>
+        <AppHeader title="Organizasyon Detayları" left={<IconButton name="arrow-left" color={colors.text} onPress={() => navigation.goBack()} />} />
+        <LoadingView />
       </SafeAreaView>
     );
   }
@@ -167,15 +147,7 @@ const OrganizationDetailScreen: React.FC = () => {
   if (!currentOrganization) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon name="arrow-left" iconStyle="solid" size={20} color={colors.text} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Organizasyon Detayları</Text>
-        </View>
+      <AppHeader title="Organizasyon Detayları" left={<IconButton name="arrow-left" color={colors.text} onPress={() => navigation.goBack()} />} />
         <View style={styles.loadingContainer}>
           <Text style={styles.emptyStateText}>
             Organizasyon bulunamadı
@@ -187,30 +159,17 @@ const OrganizationDetailScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Icon name="arrow-left" iconStyle="solid" size={20} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{currentOrganization.name}</Text>
-        
-        <View style={styles.headerActions}>
-          <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => setShowMembersDrawer(true)}
-          >
-            <Icon name="users" iconStyle="solid" size={16} color={colors.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => setShowInviteModal(true)}
-          >
-            <Icon name="user-plus" iconStyle="solid" size={16} color={colors.primary} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <AppHeader
+        title={currentOrganization.name}
+        left={<IconButton name="arrow-left" color={colors.text} onPress={() => navigation.goBack()} />}
+        right={(
+          <View style={styles.headerActions}>
+            <IconButton name="users" onPress={() => setShowMembersDrawer(true)} />
+            <IconButton name="user-plus" onPress={() => setShowInviteModal(true)} />
+            <IconButton name="list" onPress={() => navigation.navigate('OrganizationCalendarList', { organizationId })} />
+          </View>
+        )}
+      />
 
       <ScrollView
         style={styles.content}
@@ -224,18 +183,10 @@ const OrganizationDetailScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        <CalendarView
+        <MonthDayListView
           events={(currentOrganization as any)?.events || []}
-          onEventPress={(event: Event) => {
-            console.log('Etkinlik detayı:', event);
-          }}
-          onDatePress={(date: string) => {
-            console.log('Tarih seçildi:', date);
-            // Burada seçilen tarihe etkinlik ekleme modalını açabilirsin
-          }}
-          onAddEvent={() => {
-            console.log('Etkinlik ekleme modalı açılacak');
-            // Burada etkinlik ekleme modalını aç
+          onDayPress={(dateISO) => {
+            navigation.navigate('CalendarDateDetail', { organizationId, date: dateISO });
           }}
         />
       </ScrollView>

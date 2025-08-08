@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import Icon from '@react-native-vector-icons/fontawesome6';
 import { useTheme } from '../Hooks/useTheme';
-import { Event } from '../interfaces/organization';
+import { Event } from '../../interfaces/organization';
 
 interface CalendarViewProps {
   events: Event[];
@@ -306,42 +306,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         </View>
       </View>
 
-      <View style={styles.eventsSection}>
-        <Text style={styles.eventsSectionTitle}>
-          Bugünün Etkinlikleri ({todayEvents.length})
-        </Text>
-        
-        {todayEvents.length > 0 ? (
-          todayEvents.map((event, index) => (
-            <TouchableOpacity
-              key={event.id || index}
-              style={styles.eventItem}
-              onPress={() => onEventPress(event)}
-            >
-              <View style={styles.eventIcon}>
-                <Icon name="calendar-days" iconStyle="solid" size={16} color={colors.primary} />
-              </View>
-              <View style={styles.eventInfo}>
-                <Text style={styles.eventTitle}>
-                  {event.title || 'Başlıksız Etkinlik'}
-                </Text>
-                <Text style={styles.eventTime}>
-                  {event.startDate ? new Date(event.startDate).toLocaleTimeString('tr-TR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  }) : 'Saat belirtilmemiş'}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View style={styles.emptyEvents}>
-            <Text style={styles.emptyEventsText}>
-              Bugün için etkinlik bulunmuyor
-            </Text>
-          </View>
-        )}
-      </View>
+      {/* Günlük kısa liste kaldırıldı */}
     </View>
   );
 };

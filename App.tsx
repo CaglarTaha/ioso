@@ -10,6 +10,8 @@ import RegisterScreen from './src/Screens/RegisterScreen';
 import TabNavigator from './src/Navigations/TabNavigator';
 import TestScreen from './src/Screens/TestScreen';
 import OrganizationDetailScreen from './src/Screens/OrganizationDetailScreen';
+import OrganizationCalendarListScreen from './src/Screens/OrganizationCalendarListScreen';
+import CalendarDateDetailScreen from './src/Screens/CalendarDateDetailScreen';
 import { RootStackParamList } from './src/types/navigation';
 import './src/i18n';
 
@@ -58,6 +60,16 @@ const AppContent: React.FC = () => {
               name="OrganizationDetail" 
               component={OrganizationDetailScreen} 
               options={{ headerShown: false }} // You might want to show header for this screen
+            />
+            <Stack.Screen 
+              name="OrganizationCalendarList" 
+              component={OrganizationCalendarListScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="CalendarDateDetail" 
+              component={CalendarDateDetailScreen}
+              options={{ headerShown: false }}
             />
           </>
         ) : (

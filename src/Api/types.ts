@@ -60,6 +60,7 @@ export interface CalendarEventType {
   isVisible: boolean;
   organizationId: number;
   createdBy: UserType;
+  attendees?: Array<{ id: number; status: 'going' | 'maybe' | 'declined'; user?: UserType }>
 }
 
 export interface CreateCalendarEventRequest {

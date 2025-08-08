@@ -5,7 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useTheme } from '../Hooks/useTheme';
-import { StatsContainerProps } from '../interfaces/organization';
+import { StatsContainerProps } from '../../interfaces/organization';
 
 const StatsContainer: React.FC<StatsContainerProps> = ({ memberCount, eventCount }) => {
   const { colors } = useTheme();
