@@ -2,12 +2,16 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { store } from '../Store';
 import { logout } from '../Store/slices/auth.slice';
+import { Platform } from 'react-native';
 
 interface RRRequestConfig extends InternalAxiosRequestConfig {
   skipQueue?: boolean;
 }
 
-const API_URL = 'http://localhost:8080/api'; // Backend API URL
+const API_URL =
+  Platform.OS === 'android' ? 'http://10.0.2.2:8080/api' :
+  Platform.OS === 'ios' ? 'http://localhost:8080/api' :
+  'http://your-default-host:8080/api';
 
 const Headers: Record<string, string | boolean> = {
   'content-type': 'application/json;charset=utf-8',
