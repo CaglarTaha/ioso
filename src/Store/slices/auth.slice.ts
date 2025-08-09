@@ -30,11 +30,12 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await ApiAuth.Login(credentials);
       if (response.data) {
-        // Store token and user data
-        await ApiStorage.setAuthToken(response.data.accessToken);
-        await ApiStorage.setRefreshToken(response.data.refreshToken);
-        await ApiStorage.setUserData(response.data.user);
-        await ApiStorage.setIsLoggedIn(true);
+        await ApiStorage.setAuthBundle({
+          accessToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
+          userData: response.data.user,
+          isLoggedIn: true,
+        });
         return response.data;
       }
       throw new Error('Login response data is missing');

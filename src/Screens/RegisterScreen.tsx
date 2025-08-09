@@ -11,8 +11,8 @@ import {
   Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../store/slices/authSlice';
-import { RootState, AppDispatch } from '../store';
+import { registerUser } from '../Store/slices/auth.slice';
+import { RootState, AppDispatch } from '../Store';
 interface RegisterData {
   firstName: string;
   lastName: string;

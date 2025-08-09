@@ -1,5 +1,5 @@
 import { IocoApi } from './index';
-import { IResponse, LoginRequest, LoginResponse } from './types';
+import { IResponse, LoginRequest, LoginResponse, UserType } from './types';
 
 export const ApiAuth = {
   Login: async (data: LoginRequest): Promise<IResponse<LoginResponse>> => {
@@ -11,8 +11,10 @@ export const ApiAuth = {
     lastName: string;
     email: string;
     password: string;
-  }): Promise<IResponse<LoginResponse>> => {
-    return await IocoApi.post('/auth/register', { ...data, roleId: 2 }).then((response) => response.data);
+    roleId?: number;
+  }): Promise<IResponse<UserType>> => {
+    const payload = { ...data, roleId: data.roleId ?? 1 };
+    return await IocoApi.post('/create/users', payload).then((response) => response.data);
   },
 
   Logout: async (): Promise<IResponse<any>> => {

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../Store/slices/auth.slice';
-import { RootState, AppDispatch } from '../store';
+import { RootState, AppDispatch } from '../Store';
 interface LoginCredentials {
   email: string;
   password: string;
@@ -32,11 +32,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     password: '',
   });
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigation.replace('TabNavigator');
-    }
-  }, [isAuthenticated, navigation]);
+  // Navigation, App.tsx'te isAuthenticated'e göre Stack değişimiyle yönetiliyor
 
   useEffect(() => {
     // Component unmount olduğunda error'ları temizle

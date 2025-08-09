@@ -15,12 +15,13 @@ import CalendarDateDetailScreen from './src/Screens/CalendarDateDetailScreen';
 import { RootStackParamList } from './src/types/navigation';
 import './src/i18n';
 import DebuggerClient from './DebuggerClient';
+import LoadingView from './src/Components/ui/LoadingView';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppContent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated, isLoading } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [appLoading, setAppLoading] = useState(true);
@@ -43,8 +44,8 @@ const AppContent: React.FC = () => {
     setShowOnboarding(false);
   };
 
-  if (appLoading || isLoading) {
-    return null; // or a simple loading component
+  if (appLoading) {
+    return <LoadingView />;
   }
 
   if (showOnboarding) {

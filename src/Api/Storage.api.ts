@@ -10,6 +10,28 @@ const STORAGE_KEYS = {
 } as const;
 
 export const ApiStorage = {
+  setAuthBundle: async (
+    params: {
+      accessToken: string;
+      refreshToken: string;
+      userData: any;
+      isLoggedIn?: boolean;
+    }
+  ): Promise<void> => {
+    try {
+      const pairs: [string, string][] = [
+        [STORAGE_KEYS.AUTH_TOKEN, params.accessToken],
+        [STORAGE_KEYS.REFRESH_TOKEN, params.refreshToken],
+        [STORAGE_KEYS.USER_DATA, JSON.stringify(params.userData)],
+      ];
+      if (typeof params.isLoggedIn === 'boolean') {
+        pairs.push([STORAGE_KEYS.IS_LOGGED_IN, JSON.stringify(params.isLoggedIn)]);
+      }
+      await AsyncStorage.multiSet(pairs);
+    } catch (error) {
+      console.warn('Error setting auth bundle:', error);
+    }
+  },
   getIsLoggedIn: async (): Promise<boolean> => {
     try {
       const value = await AsyncStorage.getItem(STORAGE_KEYS.IS_LOGGED_IN);
