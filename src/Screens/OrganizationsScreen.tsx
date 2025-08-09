@@ -20,7 +20,7 @@ import { useTheme } from '../Hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
-import { RootState, AppDispatch } from '../store';
+import { RootState, AppDispatch } from '../Store';
 import { 
   fetchUserOrganizations, 
   createOrganization, 
@@ -493,75 +493,79 @@ const OrganizationsScreen: React.FC = () => {
         visible={showCreateModal}
         animationType="slide"
         transparent={false}
+        statusBarTranslucent
         onRequestClose={handleCloseModal}
       >
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.modalContainer}
-        >
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Yeni Organizasyon</Text>
-            <TouchableOpacity onPress={handleCloseModal}>
-              <Icon name="xmark" iconStyle="solid" size={20} color={colors.textSecondary} />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView 
-            style={styles.modalBody}
-            keyboardShouldPersistTaps="handled"
+        <SafeAreaView style={styles.modalContainer}>
+          <KeyboardAvoidingView 
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
           >
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>
-                Organizasyon Adı *
-              </Text>
-              <TextInput
-                style={styles.input}
-                value={createForm.name}
-                onChangeText={handleNameChange}
-                placeholder="Organizasyon adını girin"
-                placeholderTextColor={colors.textSecondary}
-                autoCapitalize="sentences"
-                autoCorrect={false}
-              />
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Yeni Organizasyon</Text>
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Icon name="xmark" iconStyle="solid" size={20} color={colors.textSecondary} />
+              </TouchableOpacity>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>
-                Açıklama
-              </Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                value={createForm.description}
-                onChangeText={handleDescriptionChange}
-                placeholder="Organizasyon açıklamasını girin (opsiyonel)"
-                placeholderTextColor={colors.textSecondary}
-                multiline
-                numberOfLines={3}
-                autoCapitalize="sentences"
-              />
-            </View>
-          </ScrollView>
+            <ScrollView 
+              style={styles.modalBody}
+              contentInsetAdjustmentBehavior="always"
+              keyboardShouldPersistTaps="handled"
+            >
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>
+                  Organizasyon Adı *
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  value={createForm.name}
+                  onChangeText={handleNameChange}
+                  placeholder="Organizasyon adını girin"
+                  placeholderTextColor={colors.textSecondary}
+                  autoCapitalize="sentences"
+                  autoCorrect={false}
+                />
+              </View>
 
-          <View style={styles.modalFooter}>
-            <TouchableOpacity
-              style={[styles.button, styles.cancelButton]}
-              onPress={handleCloseModal}
-            >
-              <Text style={styles.cancelButtonText}>İptal</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.submitButton]}
-              onPress={handleCreateOrganization}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#fff" size="small" />
-              ) : (
-                <Text style={styles.submitButtonText}>Oluştur</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>
+                  Açıklama
+                </Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  value={createForm.description}
+                  onChangeText={handleDescriptionChange}
+                  placeholder="Organizasyon açıklamasını girin (opsiyonel)"
+                  placeholderTextColor={colors.textSecondary}
+                  multiline
+                  numberOfLines={3}
+                  autoCapitalize="sentences"
+                />
+              </View>
+            </ScrollView>
+
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton]}
+                onPress={handleCloseModal}
+              >
+                <Text style={styles.cancelButtonText}>İptal</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.submitButton]}
+                onPress={handleCreateOrganization}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#fff" size="small" />
+                ) : (
+                  <Text style={styles.submitButtonText}>Oluştur</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
       </Modal>
 
       {/* Seçim Modal */}
