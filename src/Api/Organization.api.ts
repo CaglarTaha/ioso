@@ -6,8 +6,8 @@ export const ApiOrganization = {
     return await IocoApi.get('/organizations').then((response) => response.data);
   },
 
-  GetById: async (id: number): Promise<IResponse<OrganizationType>> => {
-    return await IocoApi.get(`/organizations/${id}`).then((response) => response.data);
+  GetById: async (id: number): Promise<IResponse<any>> => {
+    return await IocoApi.get(`/organizations/detail/${id}`).then((response) => response.data);
   },
 
   Create: async (data: CreateOrganizationRequest): Promise<IResponse<OrganizationType>> => {

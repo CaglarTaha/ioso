@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@ant-design/react-native": "^5.4.3",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-vector-icons/evil-icons": "^12.0.1",
     "@react-native-vector-icons/fontawesome6": "^12.0.1",
@@ -22,9 +23,11 @@
     "axios": "^1.10.0",
     "i18next": "^23.15.2",
     "jwt-decode": "^4.0.0",
+    "moment": "^2.30.1",
     "react": "19.1.0",
     "react-i18next": "^13.5.0",
     "react-native": "0.80.1",
+    "react-native-date-picker": "^5.0.13",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-safe-area-context": "^5.5.1",
     "react-native-screens": "^4.11.1",

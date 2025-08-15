@@ -18,6 +18,8 @@ import CalendarView from '../Components/CalendarView';
 import MonthDayListView from '../Components/MonthDayListView';
 import InviteModal from '../Components/InviteModal';
 import MembersDrawer from '../BottomSheets/MembersDrawer';
+import Accordion from './Accordion';
+import AddMeetingModal from '../Components/modals/AddMeetingModal';
 
 type OrganizationDetailRouteProp = RouteProp<RootStackParamList, 'OrganizationDetail'>;
 type OrganizationDetailNavigationProp = NativeStackNavigationProp<RootStackParamList, 'OrganizationDetail'>;
@@ -30,7 +32,8 @@ const OrganizationDetailScreen: React.FC = () => {
   
   const { organizationId } = route.params;
   const { currentOrganization, isLoading, error } = useSelector((state: RootState) => state.organization);
-  
+  const [showAddMeetingModal, setShowAddMeetingModal] = useState(false);
+
   const [refreshing, setRefreshing] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showMembersDrawer, setShowMembersDrawer] = useState(false);
@@ -166,6 +169,7 @@ const OrganizationDetailScreen: React.FC = () => {
           <View style={styles.headerActions}>
             <IconButton name="users" onPress={() => setShowMembersDrawer(true)} />
             <IconButton name="user-plus" onPress={() => setShowInviteModal(true)} />
+            <IconButton name="calendar-plus" onPress={() => setShowAddMeetingModal(true)} />
             <IconButton name="list" onPress={() => navigation.navigate('OrganizationCalendarList', { organizationId })} />
           </View>
         )}
@@ -183,12 +187,7 @@ const OrganizationDetailScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        <MonthDayListView
-          events={(currentOrganization as any)?.events || []}
-          onDayPress={(dateISO) => {
-            navigation.navigate('CalendarDateDetail', { organizationId, date: dateISO });
-          }}
-        />
+        <Accordion categorizedEvents={(currentOrganization as any)?.categorizedEvents || []} />
       </ScrollView>
 
       <InviteModal
@@ -202,6 +201,11 @@ const OrganizationDetailScreen: React.FC = () => {
         onCreate={createInviteCode}
         onShare={shareInviteCode}
         onCopy={copyInviteCode}
+      />
+      <AddMeetingModal
+        visible={showAddMeetingModal}
+        organizationId={organizationId.toString()}
+        onClose={() => setShowAddMeetingModal(false)}
       />
 
       <MembersDrawer
