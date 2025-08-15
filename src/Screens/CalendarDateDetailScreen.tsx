@@ -43,8 +43,8 @@ const CalendarDateDetailScreen: React.FC = () => {
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const startDate = `${date}T00:00:00.000Z`;
-      const endDate = `${date}T23:59:59.999Z`;
+      const startDate = new Date(`${date}T00:00:00`).toISOString();;
+      const endDate = new Date(`${date}T23:59:59.999`).toISOString();;
       const res = await ApiCalendarEvent.GetByDateRange(organizationId, startDate, endDate);
       setEvents(res.data || []);
       const grouped = await ApiCalendarEvent.GetAllMembersEvents(organizationId, startDate, endDate);

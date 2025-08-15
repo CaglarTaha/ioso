@@ -57,8 +57,8 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({ visible, organizati
     }
     try {
       setSubmitting(true);
-      const startDate = new Date(`${date}T${startTime}:00.000Z`).toISOString();
-      const endDate = new Date(`${date}T${endTime}:00.000Z`).toISOString();
+      const startDate = new Date(`${date}T${startTime}:00`).toISOString();;
+      const endDate = new Date(`${date}T${endTime}:00`).toISOString();;
       if (new Date(endDate) <= new Date(startDate)) {
         setError('Bitiş başlangıçtan sonra olmalı');
         setSubmitting(false);
